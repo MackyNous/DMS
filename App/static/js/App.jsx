@@ -1,6 +1,6 @@
 import React from "react";
 import { PageHeader} from "react-bootstrap";
-import PythonConnector from "./PythonConnector";
+import ReactButton from "./ReactButton";
 
 
 export default class App extends React.Component {
@@ -19,7 +19,7 @@ export default class App extends React.Component {
                 {/*
                     TODO: list all containers with API and make a button per Container
                 */}
-                <PythonConnector name='Maricio' />
+                <ReactButton name='Maricio' />
             </div>
         );
     }

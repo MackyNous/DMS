@@ -1,4 +1,6 @@
 from flask import Flask, render_template
+#import docker
+#client = docker.from_env()
 
 app = Flask(__name__, static_folder="../static/dist", template_folder="../static")
 
@@ -9,6 +11,13 @@ def index():
 @app.route("/hello")
 def hello():
     return "Hello World!"
+
+@app.route("/api/listContainers")
+def listContainers():
+    #containers = client.container.list(all)
+    #for container in client.containers.list():
+    #    print container.id
+    return "TODO"
 
 @app.route("/api/container")
 def container():
