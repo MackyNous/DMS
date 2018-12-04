@@ -15,22 +15,14 @@ export default class ReactButton extends React.Component {
 
     render() {
         return (
-            <Grid>
-                <Row>
-                    <Col md={7} mdOffset={5}>
-                        <h1>{this.state.greeting}</h1>
-                        <hr />
-                    </Col>
-                </Row>
-                <Row>
+
                     <Col md={7} mdOffset={5}>
                         <Button bsSize="large" bsStyle="danger" onClick={this.props.function}>
                             Say Hello!
 			            </Button>
                         <hr />
                     </Col>
-                </Row>
-            </Grid>
+
         );
     }
 }
