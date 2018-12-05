@@ -44,7 +44,7 @@ export default class App extends React.Component {
                 */}
                 <Grid>
                     <Row>
-                        <ReactButtonDev name='get Running Containers' function={this.getContainerData}/>
+                        <ReactButtonDev name='get container message' function={this.getContainerData}/>
                         <ReactButtonDev name='get Running Containers' function={this.getListOfContainers}/>
                     </Row>
                 </Grid>

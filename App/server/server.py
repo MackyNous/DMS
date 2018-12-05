@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 import docker
 client = docker.from_env()
 
@@ -14,10 +14,11 @@ def hello():
 
 @app.route("/api/listContainers")
 def listContainers():
-    containers = client.container.list(all)
+    #containers = client.container.list(all)
     #for container in client.containers.list():
     #    print container.id
-    return client.containers.list()
+    print("API call to /listContainers has been made")
+    return jsonify([container.id for container in client.containers.list()]).get_data(as_text=True)
 
 @app.route("/api/container")
 def container():
