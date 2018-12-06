@@ -1,5 +1,5 @@
 
-./static/dist/bundle.js
+static/dist/bundle.js
 package-lock.json
 
 .vscode/

@@ -8,17 +8,15 @@ export default class ReactButton extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.props = {name: 'get Data'};
     }
 
     render() {
         return (
-
-                    <Col md={7} mdOffset={5}>
-                        <Button bsSize="large" bsStyle="danger" onClick={this.props.function}>
-                            Say Hello!
-			            </Button>
-                        <hr />
-                    </Col>
+            <Button bsSize="large" bsStyle="danger" onClick={this.props.function}>
+                {this.props.name}
+	        </Button>
 
         );
     }
