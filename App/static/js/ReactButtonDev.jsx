@@ -8,10 +8,7 @@ export default class ReactButton extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { greeting: 'Hello ' + this.props.name };
-
     }
-
 
     render() {
         return (
