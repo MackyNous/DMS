@@ -38,6 +38,20 @@ def container():
     print("Docker container test")
     return "call docker container test"
 
+@app.route("/api/startContainer<conID>")
+def startContainer():
+    if(client.containers.get(conID)):
+        container = client.containers.get(conID) 
+        container.start()
+        print(container.id + "has been started")
+        return client.containers.get(conID) + "has been started"
+    else: 
+        print("container could not be started")
+        return "container could not be started"
+    
+
+
+
 @app.route("/api/container/<conID>")
 def containerID(conID):
     print("DOCKER API LIST CONTAINER DATA")

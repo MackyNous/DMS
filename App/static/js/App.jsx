@@ -7,18 +7,11 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {para: 'Container Data'};
-        this.state = {greeting: 'Hello ' +  props.name};
+        this.state = {greeting: props.desc};
 
-        this.testDockerApi = this.testDockerApi.bind(this);
+        this.startExistingContainer = this.startExistingContainer.bind(this);
         this.getListOfContainers = this.getListOfContainers.bind(this);
         this.getContainerData = this.getContainerData.bind(this);
-    }
-
-    testDockerApi() {
-        $.get(window.location.href + 'api/testApi', (data) => {
-            console.log(data);
-            this.printApiDataToScreen(data);
-        });
     }
 
     getContainerData() {
@@ -30,16 +23,21 @@ export default class App extends React.Component {
 
     getListOfContainers() {
         $.get(window.location.href + 'api/listContainers', (data) => {
-            console.log(data)
+            console.log(data);
+            this.printApiDataToScreen(data);
+        });
+    }
+
+    startExistingContainer(containerID) {
+        $.get(window.location.href + 'api/startContainer/' + containerID, (data) => {
+            console.log(data);
             this.printApiDataToScreen(data);
         });
     }
 
     printApiDataToScreen(greeting) {
-        this.setState({ greeting: greeting + ' ' + this.props.name + '!' });
+        this.setState({ greeting: greeting});
     }
-
-    
     
     render() {
         return (
@@ -61,10 +59,13 @@ export default class App extends React.Component {
                         <Col md={4}>
                             <ReactButtonDev name='get Running Containers' function={this.getListOfContainers}/>
                         </Col>
+                        <Col md={4}>
+                            <ReactButtonDev name='start docker container' function={this.startExistingContainer}/>
+                        </Col>
                     </Row>
                 </Grid>
                 <div>
-                    <p>Press the first button to test if the API is workig correctly </p>
+                    <p> {this.state.greeting} </p>
                 </div>
             </div>
         );
