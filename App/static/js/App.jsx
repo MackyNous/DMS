@@ -2,7 +2,6 @@ import React from "react";
 import { PageHeader, Grid, Row, Col, Form, FormGroup, FormControl, ControlLabel, Button} from "react-bootstrap";
 import ReactButtonDev from "./ReactButtonDev";
 import ReactJson from 'react-json-view'
-import { runInThisContext } from "vm";
 
 var $ = require('jquery');
 export default class App extends React.Component {
@@ -49,10 +48,6 @@ export default class App extends React.Component {
     }
 
     getContainerData(e) {
-/*        
-        let data = this.genericAPICall('api/container/', this.state.value.toString(), data);
-        this.setState({JSON: data});
-*/
         console.log(this.state.value);
         $.get(window.location.href + 'api/container/' + this.state.value.toString(), async (data) => {
             console.log(data);
