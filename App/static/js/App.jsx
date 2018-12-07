@@ -37,6 +37,10 @@ export default class App extends React.Component {
         this.setState({containerID: e.target.value});
     }
 
+    clickedOnButtonToAttachHandler(e) {
+        this.setState({containerID: e.target.value});
+    }
+
     genericAPICall(url, param, returnable) {
 
         if(param !== undefined && returnable !== undefined) {
@@ -73,6 +77,10 @@ export default class App extends React.Component {
 
     getListOfContainers() {
         this.genericAPICall('api/listContainers');
+    }
+
+    getContainerProcesses() {
+        this.genericAPICall('/api/ContainerTop', this.state.containerID);
     }
 
     startExistingContainer() {
@@ -117,7 +125,7 @@ export default class App extends React.Component {
                     <br />
                     <Row>
                         <Col md={6}>
-                            <FormInstance buttonText="Attach to container" placeholder='conID to attach to container' value={this.state.value} handler={this.clickedOnButtonToJSONHandler} function={this.getContainerData}></FormInstance>
+                            <FormInstance buttonText="Attach to container" placeholder='conID to attach to container' value={this.state.containerID} handler={this.clickedOnButtonToAttachHandler} function={this.getContainerProcesses}></FormInstance>
                         </Col>
                         <Col md={6}>
                             <FormInstance buttonText="Stop Container" placeholder='conID to stop' value={this.state.containerID} handler={this.clickedOnButtonStartContainerHandler} function={this.startExistingContainer}></FormInstance>

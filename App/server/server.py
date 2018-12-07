@@ -1,7 +1,12 @@
 from flask import Flask, render_template, jsonify
 JSONIFY_PRETTYPRINT_REGULAR = True
+
+import os
 import docker
 from docker import DockerClient
+
+if (os.geteuid() != 0): exit("The server shoudl be started with superuser rights")
+
 client = docker.from_env()
 
 errorMsg = "Something is wrong with the docker API, try to run the server with elevated rights or restart the docker daemon"
@@ -50,6 +55,13 @@ def containerID(conID):
         return jsonify(client.containers.get(conID).attrs)
     except (docker.errors.NotFound, docker.errors.APIError):
         return "Container does not exist or has been mistyped"
+
+@app.route("/api/conainerTop/<conID>")
+def attachAndRunTop(conID):
+    try:
+        return client.conainers.get(conID).top()
+    except:
+        return errorMsg 
 
 if __name__ == '__main__':
     app.run()
