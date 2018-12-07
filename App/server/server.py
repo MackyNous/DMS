@@ -8,9 +8,7 @@ errorMsg = "Something is wrong with the docker API, try to run the server with e
 
 app = Flask(__name__, static_folder="../static/dist", template_folder="../static")
 
-def testConn():
-    client.containers.run("hello-world", detach=True)
-    
+   
 
 @app.route("/")
 def index():
@@ -19,7 +17,6 @@ def index():
 @app.route("/api/testApi")
 def testApi():
     try:
-        testConn()
         return jsonify(client.version())
     except docker.errors.APIError: 
         return errorMsg
