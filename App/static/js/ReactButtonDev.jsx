@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row, Col } from "react-bootstrap";
+import Button from '@material-ui/core/Button';
 import {PythonConnector, getContainerData} from "./api/PythonConnector";
 
 var $ = require('jquery');
@@ -14,7 +15,7 @@ export default class ReactButton extends React.Component {
 
     render() {
         return (
-            <Button bsSize="large" bsStyle="danger" onClick={this.props.function}>
+            <Button variant="contained" color="primary" onClick={this.props.function}>
                 {this.props.name}
 	        </Button>
 

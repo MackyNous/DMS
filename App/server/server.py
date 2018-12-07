@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify
 import docker
+from docker import DockerClient
 client = docker.from_env()
 
 errorMsg = "Something is wrong with the docker API, try to run the server with elevated rights or restart the docker daemon"
@@ -13,15 +14,15 @@ def testConn():
 @app.route("/")
 def index():
     return render_template("index.html")
-'''
+
 @app.route("/api/testApi")
 def testApi():
     try:
         testConn()
-        return "Docker API is working correctly"
-    except: 
+        return "Docker API is working correctly: Docker version is " + jsonify(client.version())
+    except docker.errors.APIError: 
         return errorMsg
-'''
+
 @app.route("/api/listContainers")
 def listContainers():
     #containers = client.container.list(all)
