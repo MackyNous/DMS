@@ -1,7 +1,5 @@
 import React from "react";
-import { Grid, Row, Col } from "react-bootstrap";
 import Button from '@material-ui/core/Button';
-import {PythonConnector, getContainerData} from "./api/PythonConnector";
 
 var $ = require('jquery');
 

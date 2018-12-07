@@ -20,13 +20,14 @@ export default class App extends React.Component {
         this.input = React.createRef();
 
         this.testDockerAPI = this.testDockerAPI.bind(this);
-        this.clickedOnButtonHandler = this.clickedOnButtonHandler.bind(this);
+        this.clickedOnButtonToJSONHandler = this.clickedOnButtonToJSONHandler.bind(this);
+
         this.startExistingContainer = this.startExistingContainer.bind(this);
         this.getListOfContainers = this.getListOfContainers.bind(this);
         this.getContainerData = this.getContainerData.bind(this);
     }
 
-    clickedOnButtonHandler(e) {
+    clickedOnButtonToJSONHandler(e) {
         this.setState({value: e.target.value});
     }
 
@@ -46,7 +47,7 @@ export default class App extends React.Component {
         } else if(param === undefined && returnable === undefined) {
             $.get(window.location.href + url, (data) => {
                 console.log(data);
-                this.printApiDataToScreen(data);
+                this.printApiDataToScreen(JSON.stringify(data));
             });
         } 
     }
@@ -80,12 +81,9 @@ export default class App extends React.Component {
         return (
             <div>
                 <AppBar position='static' color='primary' children>
-                    {/*<div className='header-contents'>*/}
                     <Typography variant="h6" color="inherit">
                         Hello James Watson (AkA captain hackerman America) !
                     </Typography>
-                    {/*<p>Hello James Watson (AkA captain hackerman America) !</p>
-                    </div>*/}
                 </AppBar> <br />
                 <Grid>
                     <Row>
@@ -105,7 +103,7 @@ export default class App extends React.Component {
                             <Form inline>
                                 <FormGroup controlId="formInlineName">
                                     <ControlLabel>ContainerID</ControlLabel>{' '}
-                                    <FormControl type="text" value={this.state.value} placeholder="abcdefghij" ref={this.input} onChange={this.clickedOnButtonHandler}/>
+                                    <FormControl type="text" value={this.state.value} placeholder="abcdefghij" ref={this.input} onChange={this.clickedOnButtonToJSONHandler}/>
                                 </FormGroup>{' '}
                                 <Button type="button" ref={this.input} onClick={this.getContainerData} >Check Container Info</Button>
                             </Form>
