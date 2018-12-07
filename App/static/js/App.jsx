@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Row, Col, Form, FormGroup, FormControl, ControlLabel, Button} from "react-bootstrap";
 import ReactButtonDev from "./ReactButtonDev";
+import FormInstance from "./FormInstance";
 import ReactJson from 'react-json-view'
 import Card from '@material-ui/core/Card';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,13 +15,14 @@ export default class App extends React.Component {
             para: 'Container Data',
             greeting: props.desc,
             value: '',
-            JSON: ''
+            JSON: '',
+            containerID: ''
         };
 
-        this.input = React.createRef();
-
         this.testDockerAPI = this.testDockerAPI.bind(this);
+
         this.clickedOnButtonToJSONHandler = this.clickedOnButtonToJSONHandler.bind(this);
+        this.clickedOnButtonStartContainerHandler = this.clickedOnButtonStartContainerHandler.bind(this);
 
         this.startExistingContainer = this.startExistingContainer.bind(this);
         this.getListOfContainers = this.getListOfContainers.bind(this);
@@ -31,18 +33,22 @@ export default class App extends React.Component {
         this.setState({value: e.target.value});
     }
 
+    clickedOnButtonStartContainerHandler(e) {
+        this.setState({containerID: e.target.value});
+    }
+
     genericAPICall(url, param, returnable) {
 
         if(param !== undefined && returnable !== undefined) {
             $.get(window.location.href + url + param, (data) => {
                 console.log(data);
-                this.printApiDataToScreen(data);
+                this.printApiDataToScreen(JSON.stringify(data));
                 return returnable;
             });
         } else if(param !== undefined && returnable === undefined) {
             $.get(window.location.href + url + param, (data) => {
                 console.log(data);
-                this.printApiDataToScreen(data);
+                this.printApiDataToScreen(JSON.stringify(data));
             });
         } else if(param === undefined && returnable === undefined) {
             $.get(window.location.href + url, (data) => {
@@ -69,8 +75,8 @@ export default class App extends React.Component {
         this.genericAPICall('api/listContainers');
     }
 
-    startExistingContainer(containerID) {
-        this.genericAPICall('api/startContainer/', containerID);
+    startExistingContainer() {
+        this.genericAPICall('api/startContainer/', this.state.containerID);
     }
 
     printApiDataToScreen(greeting) {
@@ -78,6 +84,7 @@ export default class App extends React.Component {
     }
     
     render() {
+
         return (
             <div>
                 <AppBar position='static' color='primary' children>
@@ -100,15 +107,26 @@ export default class App extends React.Component {
                     <hr />
                     <Row>
                         <Col md={6}>
-                            <Form inline>
-                                <FormGroup controlId="formInlineName">
-                                    <ControlLabel>ContainerID</ControlLabel>{' '}
-                                    <FormControl type="text" value={this.state.value} placeholder="abcdefghij" ref={this.input} onChange={this.clickedOnButtonToJSONHandler}/>
-                                </FormGroup>{' '}
-                                <Button type="button" ref={this.input} onClick={this.getContainerData} >Check Container Info</Button>
-                            </Form>
+                            <FormInstance buttonText="Check Docker Info" placeholder='conID to get data' value={this.state.value} handler={this.clickedOnButtonToJSONHandler} function={this.getContainerData}></FormInstance>
                         </Col>
                         <Col md={6}>
+                            <FormInstance buttonText="Start Container" placeholder='conID to start' value={this.state.containerID} handler={this.clickedOnButtonStartContainerHandler} function={this.startExistingContainer}></FormInstance>
+                        </Col>
+
+                    </Row>
+                    <br />
+                    <Row>
+                        <Col md={6}>
+                            <FormInstance buttonText="Attach to container" placeholder='conID to attach to container' value={this.state.value} handler={this.clickedOnButtonToJSONHandler} function={this.getContainerData}></FormInstance>
+                        </Col>
+                        <Col md={6}>
+                            <FormInstance buttonText="Stop Container" placeholder='conID to stop' value={this.state.containerID} handler={this.clickedOnButtonStartContainerHandler} function={this.startExistingContainer}></FormInstance>
+                        </Col>
+
+                    </Row>
+                    <hr />
+                    <Row>
+                        <Col md={12}>
                             <ReactJson src={ this.state.JSON } theme='google'/>
                         </Col>
                     </Row>

@@ -25,17 +25,20 @@ def testApi():
 def listContainers():
     try:
         print("API call to /listContainers has been made")
-        return jsonify([ (container.id, container.name) for container in client.containers.list(all)]).get_data(as_text=True)
+        return jsonify([ (container.status, container.id, container.name ) for container in client.containers.list(all)])
     except:
         return errorMsg
 
 @app.route("/api/startContainer/<conID>")
 def startContainer(conID):
-    container = client.containers.get(conID) 
     try:
-        container.start()
-        print(container.id + " has been started")
-        return client.containers.get(conID).id + " has been started"
+        container = client.containers.get(conID)
+        if(container.status != "running"):
+            container.start()
+            print(container.id + " has been started")
+            return container.id + " has been started"
+        else: 
+            return container.id + " has already been started"
     except docker.errors.APIError: 
         print("container could not be started")
         return "container could not be started"
