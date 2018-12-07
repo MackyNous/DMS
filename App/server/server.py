@@ -54,8 +54,10 @@ def startContainer(conID):
 "call to our Docker API"
 @app.route("/api/container/<conID>")
 def containerID(conID):
-    return jsonify(client.containers.get(conID).attrs)
-
+    try:
+        return jsonify(client.containers.get(conID).attrs)
+    except (docker.errors.NotFound, docker.errors.APIError):
+        return "Container does not exist or has been mistyped"
 
 if __name__ == '__main__':
     app.run()
