@@ -38,16 +38,24 @@ def listContainers():
 def startContainer(conID):
     try:
         container = client.containers.get(conID)
-        if(container.status != "running"):
-            container.start()
-            print(container.id + " has been started")
-            return container.id + " has been started"
-        else: 
-            return container.id + " has already been started"
+        container.start()
+        print(container.id + " has been started")
+        return container.id + " has been started"
     except docker.errors.APIError: 
         print("container could not be started")
         return "container could not be started"
-    
+
+@app.route("/api/stopContainer/<conID>")
+def stopContainer(conID):
+    try:
+        container = client.containers.get(conID)
+        container.stop()
+        print(container.id + " has been stoped")
+        return container.id + " has been stoped"
+    except docker.errors.APIError: 
+        print("container could not be stoped")
+        return "container could not be stoped"
+            
 
 @app.route("/api/container/<conID>")
 def containerID(conID):
@@ -56,12 +64,12 @@ def containerID(conID):
     except (docker.errors.NotFound, docker.errors.APIError):
         return "Container does not exist or has been mistyped"
 
-@app.route("/api/conainerTop/<conID>")
+@app.route("/api/containerTop/<conID>")
 def attachAndRunTop(conID):
-    try:
-        return jsonify(client.conainers.get(conID).top())
-    except:
-        return errorMsg 
+    #try:
+        return jsonify(client.containers.get(conID).top())
+    #except:
+    #    return errorMsg 
 
 if __name__ == '__main__':
     app.run()
