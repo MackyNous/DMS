@@ -59,7 +59,7 @@ def containerID(conID):
 @app.route("/api/conainerTop/<conID>")
 def attachAndRunTop(conID):
     try:
-        return client.conainers.get(conID).top()
+        return jsonify(client.conainers.get(conID).top())
     except:
         return errorMsg 
 

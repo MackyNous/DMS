@@ -23,10 +23,12 @@ export default class App extends React.Component {
 
         this.clickedOnButtonToJSONHandler = this.clickedOnButtonToJSONHandler.bind(this);
         this.clickedOnButtonStartContainerHandler = this.clickedOnButtonStartContainerHandler.bind(this);
+        this.clickedOnButtonToAttachHandler = this.clickedOnButtonToAttachHandler.bind(this);
 
         this.startExistingContainer = this.startExistingContainer.bind(this);
         this.getListOfContainers = this.getListOfContainers.bind(this);
         this.getContainerData = this.getContainerData.bind(this);
+        this.getContainerProcesses = this.getContainerProcesses.bind(this);
     }
 
     clickedOnButtonToJSONHandler(e) {
@@ -42,19 +44,14 @@ export default class App extends React.Component {
     }
 
     genericAPICall(url, param, returnable) {
-
-        if(param !== undefined && returnable !== undefined) {
+        if(returnable!==undefined){returnable=true}
+        if(param !== undefined) {
             $.get(window.location.href + url + param, (data) => {
                 console.log(data);
-                this.printApiDataToScreen(JSON.stringify(data));
-                return returnable;
+                (returnable) ? this.printApiDataToScreen(JSON.stringify(data)) : this.setState({JSON: data});
+                //return data;
             });
-        } else if(param !== undefined && returnable === undefined) {
-            $.get(window.location.href + url + param, (data) => {
-                console.log(data);
-                this.printApiDataToScreen(JSON.stringify(data));
-            });
-        } else if(param === undefined && returnable === undefined) {
+        } else if(param === undefined) {
             $.get(window.location.href + url, (data) => {
                 console.log(data);
                 this.printApiDataToScreen(JSON.stringify(data));
@@ -66,12 +63,13 @@ export default class App extends React.Component {
         this.genericAPICall('api/testApi');
     }
 
-    getContainerData(e) {
-        console.log(this.state.value);
+    getContainerData() {
+      /*  console.log(this.state.value);
         $.get(window.location.href + 'api/container/' + this.state.value.toString(), async (data) => {
             console.log(data);
             this.setState({JSON: data});
-        }); 
+        }); */
+        this.genericAPICall('api/container/', this.state.value.toString(), true);
     
     }
 
@@ -79,8 +77,8 @@ export default class App extends React.Component {
         this.genericAPICall('api/listContainers');
     }
 
-    getContainerProcesses() {
-        this.genericAPICall('/api/ContainerTop', this.state.containerID);
+    getContainerProcesses(e) {
+        this.genericAPICall('api/containerTop/', this.state.containerID);
     }
 
     startExistingContainer() {
