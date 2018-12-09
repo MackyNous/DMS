@@ -26,12 +26,13 @@ def testApi():
     except docker.errors.APIError: 
         return errorMsg
 
-@app.route("/api/listContainers")
-def listContainers():
+@app.route("/api/listContainers/<image>")
+def listContainers(image):
     try:
         print("API call to /listContainers has been made")
-        return jsonify([ (container.status, container.short_id, container.name) for container in client.containers.list(all)])
-    except:
+        return jsonify([(container.status, container.id, container.name) for container in client.containers.list(all)]) if image == "noImage" else str([(container.status, container.image, container.id, container.name) for container in client.containers.list(all)])
+    except docker.errors.APIError as ex:       
+        print(ex.__cause__)
         return errorMsg
 
 @app.route("/api/startNewContainer")
@@ -71,10 +72,11 @@ def containerID(conID):
 
 @app.route("/api/containerTop/<conID>")
 def attachAndRunTop(conID):
-    #try:
+    try:
+        print("processes of " + conID + "have been returned")
         return jsonify(client.containers.get(conID).top())
-    #except:
-    #    return errorMsg 
+    except docker.errors.APIError:
+        return errorMsg 
 
 if __name__ == '__main__':
     app.run()

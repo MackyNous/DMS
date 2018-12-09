@@ -22,8 +22,8 @@ export default class App extends React.Component {
 
         this.testDockerAPI = this.testDockerAPI.bind(this);
 
-        this.clickedOnButtonToJSONHandler = this.clickedOnButtonToJSONHandler.bind(this);
-        this.clickedOnButtonStartStopContainerHandler = this.clickedOnButtonStartStopContainerHandler.bind(this);
+        this.toJSONHandler = this.toJSONHandler.bind(this);
+        this.startStopContainerHandler = this.startStopContainerHandler.bind(this);
 
         this.startNewContainer = this.startNewContainer.bind(this);
         this.stopExistingContainer = this.stopExistingContainer.bind(this);
@@ -33,25 +33,25 @@ export default class App extends React.Component {
         this.getContainerProcesses = this.getContainerProcesses.bind(this);
     }
 
-    clickedOnButtonToJSONHandler(e) {
+    toJSONHandler(e) {
         this.setState({containerID: e.target.value});
     }
 
-    clickedOnButtonStartStopContainerHandler(e) {
+    startStopContainerHandler(e) {
         this.setState({value: e.target.value});
     }
 
-    genericAPICall(url, param, returnable) {
-        if(returnable===undefined){returnable=false}
+    genericAPICall(url, param, isReturnable) {
+        if(isReturnable===undefined){isReturnable=false}
         if(param !== undefined) {
             $.get(window.location.href + url + param, (data) => {
                 console.log(data);
-                (!returnable) ? this.printApiDataToScreen(JSON.stringify(data, null, "\t")) : this.setState({JSON: data});
+                (!isReturnable) ? this.printApiDataToScreen(JSON.stringify(data, null, "\t")) : this.setState({JSON: data});
             });
         } else if(param === undefined) {
             $.get(window.location.href + url, (data) => {
                 console.log(data);
-                (!returnable) ? this.printApiDataToScreen(JSON.stringify(data)) : this.setState({JSON: data});
+                (!isReturnable) ? this.printApiDataToScreen(JSON.stringify(data)) : this.setState({JSON: data});
             });
         } 
     }
@@ -65,8 +65,8 @@ export default class App extends React.Component {
     }
 
     getListOfContainers() {
-        this.genericAPICall('api/listContainers', undefined, true);
-        this.genericAPICall('api/listContainers');
+        this.genericAPICall('api/listContainers/', "image");
+        this.genericAPICall('api/listContainers/', "noImage", true);
     }
 
     getContainerProcesses() {
@@ -114,20 +114,20 @@ export default class App extends React.Component {
                     <hr />
                     <Row>
                         <Col md={6}>
-                            <FormInstance buttonText="Check Docker Info" placeholder='conID to get data' value={this.state.containerID} handler={this.clickedOnButtonToJSONHandler} function={this.getContainerData}></FormInstance>
+                            <FormInstance buttonText="Check Docker Info" placeholder='conID to get data' value={this.state.containerID} handler={this.toJSONHandler} function={this.getContainerData}></FormInstance>
                         </Col>
                         <Col md={6}>
-                            <FormInstance buttonText="Start Container" placeholder='conID to start' value={this.state.value} handler={this.clickedOnButtonStartStopContainerHandler} function={this.startExistingContainer}></FormInstance>
+                            <FormInstance buttonText="Start Container" placeholder='conID to start' value={this.state.value} handler={this.startStopContainerHandler} function={this.startExistingContainer}></FormInstance>
                         </Col>
 
                     </Row>
                     <br />
                     <Row>
                         <Col md={6}>
-                            <FormInstance buttonText="Attach to container" placeholder='conID to attach to container' value={this.state.containerID} handler={this.clickedOnButtonToJSONHandler} function={this.getContainerProcesses}></FormInstance>
+                            <FormInstance buttonText="Attach to container" placeholder='conID to attach to container' value={this.state.containerID} handler={this.toJSONHandler} function={this.getContainerProcesses}></FormInstance>
                         </Col>
                         <Col md={6}>
-                            <FormInstance buttonText="Stop Container" placeholder='conID to stop' value={this.state.value} handler={this.clickedOnButtonStartStopContainerHandler} function={this.stopExistingContainer}></FormInstance>
+                            <FormInstance buttonText="Stop Container" placeholder='conID to stop' value={this.state.value} handler={this.startStopContainerHandler} function={this.stopExistingContainer}></FormInstance>
                         </Col>
 
                     </Row>
