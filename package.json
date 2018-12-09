@@ -44,9 +44,11 @@
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
+    "@material-ui/core": "^3.6.1",
     "@types/react-dom": "^16.0.10",
     "babel-preset-es2016": "^6.24.1",
     "react-bootstrap": "^0.32.4",
+    "react-json-view": "^1.19.1",
     "react-switch": "^3.0.4"
   }
 }
