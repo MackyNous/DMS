@@ -8,6 +8,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 
 var $ = require('jquery');
+
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -40,15 +41,12 @@ export default class App extends React.Component {
         this.setState({value: e.target.value});
     }
 
-
-
-
     genericAPICall(url, param, returnable) {
         if(returnable===undefined){returnable=false}
         if(param !== undefined) {
             $.get(window.location.href + url + param, (data) => {
                 console.log(data);
-                (!returnable) ? this.printApiDataToScreen(JSON.stringify(data)) : this.setState({JSON: data});
+                (!returnable) ? this.printApiDataToScreen(JSON.stringify(data, null, "\t")) : this.setState({JSON: data});
             });
         } else if(param === undefined) {
             $.get(window.location.href + url, (data) => {
@@ -64,11 +62,11 @@ export default class App extends React.Component {
 
     getContainerData() {
         this.genericAPICall('api/container/', this.state.containerID, true);
-    
     }
 
     getListOfContainers() {
         this.genericAPICall('api/listContainers', undefined, true);
+        this.genericAPICall('api/listContainers');
     }
 
     getContainerProcesses() {

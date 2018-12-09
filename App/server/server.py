@@ -30,7 +30,7 @@ def testApi():
 def listContainers():
     try:
         print("API call to /listContainers has been made")
-        return jsonify([ (container.status, container.short_id, container.name ) for container in client.containers.list(all)])
+        return jsonify([ (container.status, container.short_id, container.name) for container in client.containers.list(all)])
     except:
         return errorMsg
 

@@ -1,8 +1,6 @@
 import React from "react";
 import Button from '@material-ui/core/Button';
 
-var $ = require('jquery');
-
 export default class ReactButton extends React.Component {
 
     constructor(props) {
