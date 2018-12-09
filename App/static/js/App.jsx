@@ -24,6 +24,7 @@ export default class App extends React.Component {
         this.clickedOnButtonToJSONHandler = this.clickedOnButtonToJSONHandler.bind(this);
         this.clickedOnButtonStartStopContainerHandler = this.clickedOnButtonStartStopContainerHandler.bind(this);
 
+        this.startNewContainer = this.startNewContainer.bind(this);
         this.stopExistingContainer = this.stopExistingContainer.bind(this);
         this.startExistingContainer = this.startExistingContainer.bind(this);
         this.getListOfContainers = this.getListOfContainers.bind(this);
@@ -67,7 +68,7 @@ export default class App extends React.Component {
     }
 
     getListOfContainers() {
-        this.genericAPICall('api/listContainers');
+        this.genericAPICall('api/listContainers', undefined, true);
     }
 
     getContainerProcesses() {
@@ -80,6 +81,11 @@ export default class App extends React.Component {
 
     stopExistingContainer() {
         this.genericAPICall('api/stopContainer/', this.state.value);
+    }
+
+    startNewContainer() {
+        this.printApiDataToScreen("Container is starting");
+        this.genericAPICall('api/startNewContainer');
     }
 
     printApiDataToScreen(greeting) {
@@ -104,7 +110,7 @@ export default class App extends React.Component {
                             <ReactButtonDev name='get Running Containers' function={this.getListOfContainers}/>
                         </Col>
                         <Col md={4}>
-                            <ReactButtonDev name='start new CSI container' function={this.startExistingContainer}/>
+                            <ReactButtonDev name='start new CSI container' function={this.startNewContainer}/>
                         </Col>
                     </Row>
                     <hr />

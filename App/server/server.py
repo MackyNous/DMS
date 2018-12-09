@@ -30,9 +30,14 @@ def testApi():
 def listContainers():
     try:
         print("API call to /listContainers has been made")
-        return jsonify([ (container.status, container.id, container.name ) for container in client.containers.list(all)])
+        return jsonify([ (container.status, container.short_id, container.name ) for container in client.containers.list(all)])
     except:
         return errorMsg
+
+@app.route("/api/startNewContainer")
+def startNewContainer():
+    client.containers.run("hypush/csi", "service mysql start && npm start")
+    return "New CSI container has been started"
 
 @app.route("/api/startContainer/<conID>")
 def startContainer(conID):
